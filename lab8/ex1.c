@@ -174,9 +174,9 @@ void sortFlights(void)
 	{
 		j = i;
 
-		for (int k = 0; k < count; ++k)
+		for (int k = i; k < count; ++k)
 		{
-			if ((flights+j)->number < (flights+k)->number) j = k;
+			if ((flights+j)->number > (flights+k)->number) j = k;
 		}
 
 		(flights+i)->number=(flights+i)->number+(flights+j)->number-((flights+j)->number=(flights+i)->number);
@@ -378,11 +378,20 @@ void editFlightInfo(void)
 		if ((flights+i)->number == userElement)
 		{
 			editElement = i;
+			break;
+		}
+
+		else if (i == count - 1); 
+		{
+			printf("Рейс с таким номером не найден\n");
+			editFlightInfo();
 		}
 	}
 
 	do
 	{
+		if (choise == 0) main();
+
 		printf("\nВыберете параметр для изменения:\n%s\n%s\n%s\n%s\n%s\n%s\n\n", "(1) Номер рейса",
 																	 		   "(2) Пункт назначения",
 																		       "(3) Время вылета",
