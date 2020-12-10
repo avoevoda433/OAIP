@@ -157,7 +157,7 @@ void diagonalSum(int **matrix, int n)
 	for (int i = 0; i < n-1; ++i)
 	{
 		*(values+i) = upValue[i];
-		*(values+(n-i)) = downValue[i];
+		*(values+(n+i)) = downValue[i];
 	}
 
 	printf("Наибольшая сумма элементов диагонали, параллельной главной: %d\n", sortElements(values, n));
