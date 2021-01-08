@@ -87,7 +87,7 @@ void inputInfo(void)
 
 	printf("%s\n", "Введите адрес (Улица, дом/квартира):");
 	scanf("%s%s", (clients+clientsCount)->address[0],
-				  (clients+clientsCount)->address[1],
+				  (clients+clientsCount)->address[1]);
 						 
 
 	printf("%s\n", "Введите номер телефона:");
