@@ -32,6 +32,13 @@ int GetMatrixSize(FILE* f)
     rewind(f);
     while (fscanf(f, "%f", &number) == 1) 
         count++;
+
+    /* проверка на наличие элементов в файле */
+    if (count == 0)
+    {
+        printf("Файл пуст\n");
+        exit(EXIT_FAILURE);
+    } 
  
     /* размер расширенной матрицы имеет вид Nx(N+1),
        поэтому если кол-во элементов 12, ищем ближайший
@@ -114,7 +121,14 @@ float* GetResult(float **matrix, int rows)
         result[i] = 0;
 
     /* Находим результат неизвестной, которую можно получить из последней строки матрицы */
-    result[rows-1] = matrix[rows-1][rows] / matrix[rows-1][rows-1];
+    if (matrix[rows-1][rows-1] != 0)
+        result[rows-1] = matrix[rows-1][rows] / matrix[rows-1][rows-1];
+    
+    else 
+    {
+        printf("Система не совместна\n");
+        exit(EXIT_FAILURE);
+    }
 
     /* Находим все остальные переменные */
     for (int i = rows-2; i >= 0; i--)
@@ -137,6 +151,7 @@ void WriteResult(FILE* f, float *result, int rows)
         fprintf(f, "%sx%d = %1.2f\n", (i == 0 ? "\n\nРезультат:\n" :""), i+1, result[i]);
     
     fclose(f);
+    printf("Программа выполнена успешно\nРезультат записан в файл\n");
 }
 
 
@@ -147,7 +162,7 @@ int main(int argc, char* argv[])
 
     /* получаем количество строк и стобцов */
     int rows = GetMatrixSize(f);
-    int columns = GetMatrixSize(f) + 1;
+    int columns = rows + 1;
 
     /* создаем и присваиваем значение матрице */
     float **matrix = GetMatrixNumbers(f, rows, columns);
