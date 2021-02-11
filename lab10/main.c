@@ -143,9 +143,9 @@ float* GetResult(float **matrix, int rows)
 
 
 /* Функция для записи результата в файл */
-void WriteResult(FILE* f, float *result, int rows)
+void WriteResult(FILE* f, char *fileName, float *result, int rows)
 {
-    f = fopen("matrix.txt", "aw");
+    f = fopen(fileName, "aw");
     for (int i = 0; i < rows; i++)
         fprintf(f, "%sx%d = %1.2f\n", (i == 0 ? "\n\nРезультат:\n" :""), i+1, result[i]);
     
@@ -156,8 +156,12 @@ void WriteResult(FILE* f, float *result, int rows)
 
 int main(int argc, char* argv[])
 {
+    char fileName[1024];
+    printf("Введите путь к файлу: ");
+    scanf("%s", fileName);
+
     /* устанавливаем значение файлу */
-    FILE* f = GetFile("matrix.txt", "r");
+    FILE* f = GetFile(fileName, "r");
 
     /* получаем количество строк и стобцов */
     int rows = GetMatrixSize(f);
@@ -176,7 +180,7 @@ int main(int argc, char* argv[])
 
     /* создаем массив найденных переменных и записываем его в файл */
     float *result = GetResult(matrix, rows);
-    WriteResult(f, result, rows);
+    WriteResult(f, fileName, result, rows);
 
     return 0;
 }
