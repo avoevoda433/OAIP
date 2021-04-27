@@ -79,6 +79,38 @@ void SimpleIterationMethod()
 }
 
 
+void SeidelMethod()
+{
+    float elementsSum = 0;
+    static int iteration;
+
+    if (iteration != 0) 
+        for (int i = 0; i < SIZE; i++)
+            matX[i] = matRes[i];
+    else
+        for (int i = 0; i < SIZE; i++)
+            matX[i] = matB[i];
+        
+    for (int i = 0; i < SIZE; i++)
+    {
+        for (int j = i+1; j < SIZE; j++)
+            if (i != j) elementsSum += matA[i][j] * matX[j];
+
+        matRes[i] = (matB[i] - elementsSum) / matA[i][i];
+        elementsSum = 0;
+
+        for (int j = 0; j < i; j++)
+            if (i != j) elementsSum += matA[i][j] * matRes[j];
+        elementsSum /= -matA[i][i];
+        
+        matRes[i] += elementsSum;
+        elementsSum = 0;
+    }
+
+    iteration++;
+}
+
+
 int CheckResult()
 {
     float elementsSum = 0;
@@ -95,6 +127,8 @@ int CheckResult()
 
 int main()
 {
+    int choice;
+
     printf("Введите необходимую точность вычислений: ");
     scanf("%f", &e);
 
@@ -104,9 +138,29 @@ int main()
     RowSum(1, 0, -2.7, SIZE);
     RowSum(0, 1, -0.2, SIZE);
 
+    printf("%s\n\n%s\n%s\n", "Выберите метод решения СЛАУ:", "(1) Метод простых итераций", "(2) Метод Зейделя");
+
     do{
-        SimpleIterationMethod();
-    } while (!CheckResult());
+        scanf("%d", &choice);
+    } while (choice < 1 && choice > 2);
+
+    switch (choice)
+    {
+        case 1:
+            do{
+                SimpleIterationMethod();
+            } while (!CheckResult());
+            break;
+
+        case 2:
+            do{
+                SeidelMethod();
+            } while (!CheckResult());
+            break;
+        
+        default:
+            break;
+    }
     
     for (int i = 0; i < SIZE; i++)
         printf("x%d = %2.2f\n", i+1, matRes[i]);
